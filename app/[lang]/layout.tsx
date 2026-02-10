@@ -22,6 +22,9 @@ export function generateMetadata({ params }: { params: { lang: string } }): Meta
         description: `${translations[currentLang.code].hero.subtitle}`,
         type: "website",
       },
+      icons: {
+        icon: "/favicon.svg",
+      },
     };
   }
   return {
@@ -33,6 +36,9 @@ export function generateMetadata({ params }: { params: { lang: string } }): Meta
       title: `${translations[currentLang.code].hero.name} ${translations[currentLang.code].hero.role}`,
       description: `${translations[currentLang.code].hero.subtitle}`,
       type: "website",
+    },
+    icons: {
+      icon: "/favicon.svg",
     },
   };
 }

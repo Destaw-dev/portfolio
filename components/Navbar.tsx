@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -15,7 +15,6 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const { language } = useLanguage();
-  const pathname = usePathname();
   const t = translations[getSafeLanguage(language)].nav;
 
   useEffect(() => {
@@ -100,7 +99,7 @@ export function Navbar() {
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-4">
           <div className="flex items-center justify-between h-20">
             <Link
               href={`/${language}`}
@@ -108,7 +107,7 @@ export function Navbar() {
               onClick={closeMobileMenu}
               aria-label="Home"
             >
-              Portfolio
+              <Image src="/logo.svg" alt="Destaw Melese logo" height={400} width={400}/>
             </Link>
 
             <div className="flex items-center gap-4 sm:gap-8">
