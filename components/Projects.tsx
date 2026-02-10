@@ -16,8 +16,8 @@ export function Projects() {
       description: t.listali.description,
       techStack: ["React", "Node.js", "MongoDB", "Socket.io", "Express"],
       githubUrl: "https://github.com/Destaw-dev/listali",
-      liveUrl: "https://app.listali.co.il",
-      imageUrl: "/listali.png",
+      liveUrl: "https://listali.co.il",
+      imageUrl: "/www.listali.co.il.png",
       highlights: Array.isArray(t.listali.highlights) ? [...t.listali.highlights] : undefined,
     },
     // {
