@@ -52,7 +52,7 @@ export function Contact() {
             <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </a>
           <a
-            href="mailto:your.email@example.com"
+            href="mailto:destawgm@gmail.com"
             className="group flex items-center gap-3 px-8 py-4 glass border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl font-semibold hover:border-purple-500 dark:hover:border-purple-400 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
           >
             <Mail className="w-5 h-5" />
