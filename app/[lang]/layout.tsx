@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "../../components/ThemeProvider";
 import { LanguageProvider } from "../../contexts/LanguageContext";
 import { languages, translations } from "../../lib/i18n";
@@ -72,6 +74,8 @@ export default function LangLayout({
             {children}
           </ThemeProvider>
         </LanguageProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

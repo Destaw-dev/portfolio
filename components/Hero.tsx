@@ -1,18 +1,58 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { useLanguage } from "../contexts/LanguageContext";
 import { translations, getSafeLanguage } from "../lib/i18n";
 
 const GITHUB_URL = "https://github.com/Destaw-dev";
-
 const CV_FILE = "/Destaw_Melese_CV.pdf";
 
 export function Hero() {
   const heroRef = useRef<HTMLElement>(null);
   const { language } = useLanguage();
   const t = translations[getSafeLanguage(language)].hero;
+
+  const roles = t.roles as readonly string[];
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [displayed, setDisplayed] = useState('');
+  const [typing, setTyping] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReducedMotion(mq.matches);
+  }, []);
+
+  useEffect(() => {
+    setRoleIndex(0);
+    setDisplayed('');
+    setTyping(true);
+  }, [language]);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    const current = roles[roleIndex];
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (typing) {
+      if (displayed.length < current.length) {
+        timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 80);
+      } else {
+        timeout = setTimeout(() => setTyping(false), 2000);
+      }
+    } else {
+      if (displayed.length > 0) {
+        timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 40);
+      } else {
+        setRoleIndex((i) => (i + 1) % roles.length);
+        setTyping(true);
+      }
+    }
+
+    return () => clearTimeout(timeout);
+  }, [displayed, typing, roleIndex, roles, reducedMotion]);
 
   return (
     <section
@@ -37,9 +77,16 @@ export function Hero() {
       <div className="relative max-w-5xl mx-auto text-center space-y-10 z-10">
         <div className="space-y-6 animate-slide-up">
           <div className="inline-block">
-            <span className="px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold border border-blue-200 dark:border-blue-800">
-              {t.role}
-            </span>
+            {reducedMotion ? (
+              <span className="px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold border border-blue-200 dark:border-blue-800">
+                {t.role}
+              </span>
+            ) : (
+              <span className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold border border-blue-200 dark:border-blue-800 font-mono min-w-[200px] justify-center">
+                {displayed || '\u00A0'}
+                <span className="animate-blink text-blue-600 dark:text-blue-400 ml-0.5">|</span>
+              </span>
+            )}
           </div>
 
           <h1 className="text-6xl sm:text-7xl lg:text-8xl font-extrabold leading-tight">
@@ -60,35 +107,33 @@ export function Hero() {
         >
           <Link
             href="#projects"
-            className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white rounded-xl font-semibold overflow-hidden transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-2xl"
+            className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white rounded-xl font-semibold overflow-hidden transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-2xl"
           >
             <span className="relative z-10">{t.viewProjects}</span>
             <div className="absolute inset-0 bg-gradient-to-r from-blue-700 via-purple-700 to-pink-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </Link>
 
-          {/* ✅ Download CV */}
           <a
             href={CV_FILE}
             download
-            className="px-8 py-4 glass border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl font-semibold hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            className="px-8 py-4 glass border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl font-semibold hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
             aria-label={t.downloadCV}
           >
             {t.downloadCV}
           </a>
 
-          {/* ✅ GitHub */}
           <a
             href={GITHUB_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-8 py-4 glass border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl font-semibold hover:border-purple-500 dark:hover:border-purple-400 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            className="px-8 py-4 glass border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl font-semibold hover:border-purple-500 dark:hover:border-purple-400 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
           >
             {t.github}
           </a>
 
           <Link
             href="#contact"
-            className="px-8 py-4 glass border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl font-semibold hover:border-pink-500 dark:hover:border-pink-400 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            className="px-8 py-4 glass border-2 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl font-semibold hover:border-pink-500 dark:hover:border-pink-400 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
           >
             {t.contact}
           </Link>

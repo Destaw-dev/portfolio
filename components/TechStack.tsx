@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Monitor, Server, Database, GitBranch } from "lucide-react";
 import { useLanguage } from "../contexts/LanguageContext";
 import { translations, getSafeLanguage } from "../lib/i18n";
 
@@ -8,68 +8,32 @@ export function TechStack() {
   const { language } = useLanguage();
   const t = translations[getSafeLanguage(language)].techStack;
 
-  const techCategories = {
-    [t.frontend]: ["React", "Next.js", "TypeScript", "Tailwind CSS", "HTML5", "CSS3"],
-    [t.backend]: ["Node.js", "Express", "Python", "REST APIs", "GraphQL"],
-    [t.database]: ["MongoDB"],
-    [t.devops]: ["Docker", "Vercel", "Git", "CI/CD"],
-  };
+  const techCategories = [
+    {
+      key: t.frontend,
+      icon: <Monitor className="w-5 h-5" />,
+      techs: ["React", "Next.js", "TypeScript", "Tailwind CSS", "HTML5", "CSS3"],
+    },
+    {
+      key: t.backend,
+      icon: <Server className="w-5 h-5" />,
+      techs: ["Node.js", "Express", "Python", "REST APIs", "GraphQL"],
+    },
+    {
+      key: t.database,
+      icon: <Database className="w-5 h-5" />,
+      techs: ["MongoDB"],
+    },
+    {
+      key: t.devops,
+      icon: <GitBranch className="w-5 h-5" />,
+      techs: ["Docker", "Vercel", "Git", "CI/CD"],
+    },
+  ];
 
-  const techRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (techRef.current) {
-      const cards = techRef.current.querySelectorAll('.animate-on-scroll');
-      cards.forEach((card) => {
-        card.classList.remove("visible");
-      });
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { 
-        threshold: 0.1,
-        rootMargin: "0px 0px -100px 0px"
-      }
-    );
-
-    const timeoutId = setTimeout(() => {
-      if (techRef.current) {
-        const header = techRef.current.querySelector('.text-center');
-        if (header) {
-          observer.observe(header);
-        }
-      }
-
-      if (techRef.current) {
-        const cards = techRef.current.querySelectorAll('.animate-on-scroll');
-        cards.forEach((card) => {
-          observer.observe(card);
-        });
-      }
-    }, 100);
-
-    return () => {
-      clearTimeout(timeoutId);
-      if (techRef.current) {
-        const cards = techRef.current.querySelectorAll('.animate-on-scroll');
-        cards.forEach((card) => {
-          observer.unobserve(card);
-        });
-      }
-    };
-  }, [language]);
 
   return (
     <section
-      ref={techRef}
       id="tech-stack"
       className="relative py-32 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 overflow-hidden"
     >
@@ -87,28 +51,27 @@ export function TechStack() {
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {Object.entries(techCategories).map(([category, technologies], index) => (
+          {techCategories.map(({ key: category, icon, techs }) => (
             <div
               key={category}
-              className="glass rounded-2xl p-6 lg:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-200/50 dark:border-gray-800/50 transform hover:-translate-y-2 animate-on-scroll"
-              style={{ transitionDelay: `${index * 0.1}s` }}
+              className="glass rounded-2xl p-6 lg:p-8 shadow-xl hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 border border-gray-200/50 dark:border-gray-800/50 transform hover:-translate-y-2"
             >
-              <h3 className="text-2xl font-bold mb-6 gradient-text">
-                {category}
-              </h3>
-              <ul className="space-y-3">
-                {technologies.map((tech) => (
-                  <li
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 rounded-lg bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-600 dark:text-blue-400">
+                  {icon}
+                </div>
+                <h3 className="text-xl font-bold gradient-text">{category}</h3>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {techs.map((tech) => (
+                  <span
                     key={tech}
-                    className="text-gray-700 dark:text-gray-300 flex items-center group rtl:flex-row-reverse"
+                    className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200/50 dark:border-blue-800/50 text-gray-800 dark:text-gray-200 text-sm font-medium rounded-full hover:border-purple-400 dark:hover:border-purple-500 hover:scale-105 transition-all duration-200 cursor-default"
                   >
-                    <span className="w-2 h-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mr-3 rtl:mr-0 rtl:ml-3 group-hover:scale-150 transition-transform duration-300"></span>
-                    <span className="group-hover:text-gray-900 dark:group-hover:text-white transition-colors duration-300">
-                      {tech}
-                    </span>
-                  </li>
+                    {tech}
+                  </span>
                 ))}
-              </ul>
+              </div>
             </div>
           ))}
         </div>

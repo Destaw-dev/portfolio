@@ -21,6 +21,7 @@ const config: Config = {
         "float": "float 6s ease-in-out infinite",
         "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "gradient": "gradient 15s ease infinite",
+        "blink": "blink 1s step-end infinite",
       },
       keyframes: {
         fadeIn: {
@@ -47,6 +48,10 @@ const config: Config = {
           "0%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
           "100%": { backgroundPosition: "0% 50%" },
+        },
+        blink: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0" },
         },
       },
       backgroundImage: {
