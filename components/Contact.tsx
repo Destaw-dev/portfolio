@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Github, Linkedin, Mail, CheckCircle, Send } from "lucide-react";
 import emailjs from "@emailjs/browser";
 import { useLanguage } from "../contexts/LanguageContext";
 import { translations, getSafeLanguage } from "../lib/i18n";
+
+const EMAILJS_TIMEOUT_MS = 10_000;
+const SUCCESS_RESET_MS = 5_000;
 
 type FormStatus = "idle" | "sending" | "success" | "error";
 
@@ -40,6 +43,16 @@ export function Contact() {
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [status, setStatus] = useState<FormStatus>("idle");
 
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (status !== "success") return;
+    const timer = setTimeout(() => setStatus("idle"), SUCCESS_RESET_MS);
+    return () => clearTimeout(timer);
+  }, [status]);
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -53,16 +66,23 @@ export function Contact() {
     const errs = validate(formData, t);
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
+      if (errs.name) nameRef.current?.focus();
+      else if (errs.email) emailRef.current?.focus();
+      else if (errs.message) messageRef.current?.focus();
       return;
     }
     setStatus("sending");
     try {
-      await emailjs.send(
+      const sendPromise = emailjs.send(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
         { from_name: formData.name, from_email: formData.email, message: formData.message },
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
       );
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("timeout")), EMAILJS_TIMEOUT_MS)
+      );
+      await Promise.race([sendPromise, timeoutPromise]);
       setStatus("success");
       setFormData({ name: "", email: "", message: "" });
     } catch {
@@ -135,16 +155,10 @@ export function Contact() {
           <h3 className="text-2xl font-bold gradient-text mb-6">{t.formTitle}</h3>
 
           {status === "success" ? (
-            <div className="glass rounded-2xl p-10 border border-green-300/50 dark:border-green-700/50 text-center space-y-4">
+            <div className="glass rounded-2xl p-10 border border-green-300/50 dark:border-green-700/50 text-center space-y-4" role="status" aria-live="polite">
               <CheckCircle className="w-14 h-14 text-green-500 mx-auto" />
               <p className="text-xl font-bold text-gray-900 dark:text-white">{t.successTitle}</p>
               <p className="text-gray-600 dark:text-gray-400">{t.successMessage}</p>
-              <button
-                onClick={() => setStatus("idle")}
-                className="mt-4 px-6 py-2 glass border border-gray-300 dark:border-gray-700 rounded-xl text-sm font-medium hover:border-purple-500 transition-all duration-300 active:scale-95"
-              >
-                ↩
-              </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} noValidate className="space-y-4">
@@ -153,6 +167,7 @@ export function Contact() {
                   {t.nameLabel}
                 </label>
                 <input
+                  ref={nameRef}
                   id="name"
                   name="name"
                   type="text"
@@ -161,8 +176,10 @@ export function Contact() {
                   placeholder={t.namePlaceholder}
                   className={inputClass("name")}
                   autoComplete="name"
+                  aria-invalid={!!errors.name}
+                  aria-describedby={errors.name ? "name-error" : undefined}
                 />
-                {errors.name && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.name}</p>}
+                {errors.name && <p id="name-error" className="mt-1 text-sm text-red-500 dark:text-red-400" role="alert">{errors.name}</p>}
               </div>
 
               <div>
@@ -170,6 +187,7 @@ export function Contact() {
                   {t.emailLabel}
                 </label>
                 <input
+                  ref={emailRef}
                   id="email"
                   name="email"
                   type="email"
@@ -178,8 +196,10 @@ export function Contact() {
                   placeholder={t.emailPlaceholder}
                   className={inputClass("email")}
                   autoComplete="email"
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? "email-error" : undefined}
                 />
-                {errors.email && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.email}</p>}
+                {errors.email && <p id="email-error" className="mt-1 text-sm text-red-500 dark:text-red-400" role="alert">{errors.email}</p>}
               </div>
 
               <div>
@@ -187,6 +207,7 @@ export function Contact() {
                   {t.messageLabel}
                 </label>
                 <textarea
+                  ref={messageRef}
                   id="message"
                   name="message"
                   rows={5}
@@ -194,8 +215,10 @@ export function Contact() {
                   onChange={handleChange}
                   placeholder={t.messagePlaceholder}
                   className={`${inputClass("message")} resize-none`}
+                  aria-invalid={!!errors.message}
+                  aria-describedby={errors.message ? "message-error" : undefined}
                 />
-                {errors.message && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.message}</p>}
+                {errors.message && <p id="message-error" className="mt-1 text-sm text-red-500 dark:text-red-400" role="alert">{errors.message}</p>}
               </div>
 
               {status === "error" && (

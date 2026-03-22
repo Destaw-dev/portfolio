@@ -29,7 +29,7 @@ export const translations = {
       ],
       name: "Destaw Melese",
       title:
-        "Frontend Developer building production web apps — fast, accessible, and scalable.",
+        "Frontend Developer building production-grade web apps - fast, accessible, and built to scale.",
       subtitle:
         "React • Next.js • TypeScript • Node.js • MongoDB • WebSockets • CI/CD",
       viewProjects: "View Projects",
@@ -42,9 +42,9 @@ export const translations = {
       badge: "About",
       title: "About Me",
       paragraph1:
-        "I'm a Frontend-focused developer with production experience building dashboards and real-time products used by thousands. I turn complex workflows and data into clear, intuitive user experiences.",
+        "I'm a Frontend-focused developer with hands-on production experience building dashboards and real-time products used by thousands of users. I specialize in turning complex workflows and data into clear, intuitive user experiences.",
       paragraph2:
-        "I work closely with product and design teams to ship responsive and accessible interfaces, and I also contribute to Node.js APIs, MongoDB data modeling, and performance improvements end-to-end.",
+        "I collaborate closely with product and design teams to ship responsive, accessible interfaces - and I contribute across the stack: Node.js APIs, MongoDB data modeling, and end-to-end performance improvements.",
     },
 
     projects: {
@@ -92,7 +92,7 @@ export const translations = {
       auth: {
         title: "Authentication & Security",
         description:
-          "JWT + HTTP-only cookies with refresh flow, OAuth login, password recovery, validation, and rate limiting — built with production security practices.",
+          "JWT + HTTP-only cookies with refresh flow, OAuth login, password recovery, validation, and rate limiting - built with production security practices.",
         highlights: [
           "JWT + HTTP-only cookies with refresh token rotation",
           "OAuth login + secure session handling",
@@ -121,7 +121,7 @@ export const translations = {
       badge: "Contact",
       title: "Let’s Connect",
       subtitle:
-        "Open to Frontend and Full-Stack roles. If you’re hiring or building something meaningful — I’d love to talk.",
+        "Open to Frontend and Full-Stack roles. If you’re hiring or building something impactful - let’s talk.",
       github: "GitHub",
       linkedin: "LinkedIn",
       email: "Email",
@@ -163,7 +163,7 @@ export const translations = {
       ],
       name: "דסטאו מלסה",
       title:
-        "מפתח Frontend שבונה מוצרים לפרודקשן — מהירים, נגישים וסקיילביליים.",
+        "מפתח Frontend שבונה מוצרי פרודקשן - מהירים, נגישים, ומוכנים לסקייל.",
       subtitle:
         "React • Next.js • TypeScript • Node.js • MongoDB • WebSockets • CI/CD",
       viewProjects: "לצפייה בפרויקטים",
@@ -176,9 +176,9 @@ export const translations = {
       badge: "אודות",
       title: "קצת עליי",
       paragraph1:
-        "אני מפתח שמתמקד ב־Frontend עם ניסיון בפרודקשן בבניית דשבורדים ומוצרים בזמן אמת שמשמשים אלפי משתמשים. אני אוהב לקחת תהליכים ומידע מורכב ולהפוך אותם לחוויית משתמש ברורה ופשוטה.",
+        "אני מפתח עם מיקוד ב־Frontend וניסיון מעשי בפרודקשן - בניית דשבורדים ומוצרים בזמן אמת שמשמשים אלפי משתמשים. אני מתמחה בלקחת תהליכים ונתונים מורכבים ולהפוך אותם לחוויית משתמש ברורה ופשוטה.",
       paragraph2:
-        "אני עובד צמוד עם צוותי מוצר ועיצוב כדי לשחרר פיצ׳רים רספונסיביים ונגישים, ותורם גם לצד השרת — APIs ב־Node.js, מודלים ב־MongoDB ושיפורי ביצועים מקצה לקצה.",
+        "אני עובד צמוד עם צוותי מוצר ועיצוב כדי לשחרר ממשקים רספונסיביים ונגישים - ותורם לאורך כל הסטאק: APIs ב־Node.js, מודלים ב־MongoDB ושיפורי ביצועים מקצה לקצה.",
     },
 
     projects: {
@@ -225,7 +225,7 @@ export const translations = {
       auth: {
         title: "אימות ואבטחה",
         description:
-          "JWT עם Cookies (HTTP-only) ו־Refresh Flow, התחברות OAuth, שחזור סיסמה, ולידציה ו־Rate Limiting — לפי פרקטיקות אבטחה לפרודקשן.",
+          "JWT עם Cookies (HTTP-only) ו־Refresh Flow, התחברות OAuth, שחזור סיסמה, ולידציה ו־Rate Limiting - לפי פרקטיקות אבטחה לפרודקשן.",
         highlights: [
           "JWT + Cookies (HTTP-only) עם Refresh Token rotation",
           "התחברות OAuth וניהול session מאובטח",
@@ -254,7 +254,7 @@ export const translations = {
       badge: "יצירת קשר",
       title: "בואו נדבר",
       subtitle:
-        "פתוח להזדמנויות Frontend ו־Full-Stack. אם אתם מגייסים או בונים משהו משמעותי — אשמח לדבר.",
+        "פתוח להזדמנויות Frontend ו־Full-Stack. אם אתם מגייסים או בונים משהו משמעותי - דברו איתי.",
       github: "GitHub",
       linkedin: "LinkedIn",
       email: "אימייל",

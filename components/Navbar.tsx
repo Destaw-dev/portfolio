@@ -47,6 +47,12 @@ export function Navbar() {
 
     document.body.style.overflow = 'hidden';
 
+    // Move focus into menu when it opens
+    const firstFocusable = mobileMenuRef.current?.querySelector<HTMLElement>(
+      'a[href], button:not([disabled])'
+    );
+    firstFocusable?.focus();
+
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       
@@ -71,14 +77,37 @@ export function Navbar() {
   }, [isMobileMenuOpen, closeMobileMenu]);
 
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isMobileMenuOpen) {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!isMobileMenuOpen) return;
+
+      if (event.key === 'Escape') {
         closeMobileMenu();
+        return;
+      }
+
+      if (event.key === 'Tab' && mobileMenuRef.current) {
+        const focusable = mobileMenuRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (event.shiftKey) {
+          if (document.activeElement === first) {
+            event.preventDefault();
+            last?.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            event.preventDefault();
+            first?.focus();
+          }
+        }
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isMobileMenuOpen, closeMobileMenu]);
 
   const navLinks = [
